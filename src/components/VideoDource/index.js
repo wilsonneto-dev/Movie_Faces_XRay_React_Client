@@ -14,11 +14,16 @@ export default props => {
     videoElement.current.src = url;
   };
 
-  const initFaceApis = async () => {
+  const initModels = async () => {
     await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
+  };
+
+  const initFaceApis = async () => {
     const detections = await faceapi.detectAllFaces(videoElement.current);
     console.log(detections);
   };
+
+  initModels();
 
   return (
     <>
