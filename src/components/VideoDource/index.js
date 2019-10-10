@@ -1,5 +1,7 @@
 import React, { createRef } from 'react';
 
+import * as faceapi from 'face-api.js';
+
 import './style.scss';
 import iconFile from '../../assets/ic-file-upload.png';
 
@@ -12,10 +14,16 @@ export default props => {
     videoElement.current.src = url;
   };
 
+  const initFaceApis = async () => {
+    await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
+    const detections = await faceapi.detectAllFaces(videoElement.current);
+    console.log(detections);
+  };
+
   return (
     <>
       <div className="source">
-        <div class="video-wrapper">
+        <div className="video-wrapper">
           <video
             ref={videoElement}
             type="video/mp4"
@@ -28,9 +36,10 @@ export default props => {
           <div className="filePick">
             <label>
               <input ref={fileInput} onChange={fileChange} type="file" />
-              <img src={iconFile} />
+              <img src={iconFile} alt="insira um vídeo" />
             </label>
           </div>
+          <button onClick={initFaceApis}>Teste</button>
         </center>
       </div>
     </>
